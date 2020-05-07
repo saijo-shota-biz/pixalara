@@ -1,22 +1,22 @@
 version: '3'
 
 services: 
-  php:
+  pixalara_web:
     build: ./docker/php
     volumes:
-    - ./server:/var/www
+    - ./web:/var/www
 
-  nginx:
+  pixalara_nginx:
     image: nginx
     ports:
     - 80:80
     volumes:
-    - ./server:/var/www
+    - ./web:/var/www
     - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-    - php
+    - pixalara_web
 
-  db:
+  pixalara_db:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: pass
