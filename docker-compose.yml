@@ -2,14 +2,12 @@ version: '3'
 
 services: 
   php:
-    container_name: php
     build: ./docker/php
     volumes:
     - ./server:/var/www
 
   nginx:
     image: nginx
-    container_name: nginx
     ports:
     - 80:80
     volumes:
@@ -20,10 +18,9 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: db-host
     environment:
       MYSQL_ROOT_PASSWORD: pass
-      MYSQL_DATABASE: laravel-todo
+      MYSQL_DATABASE: pixalara
       MYSQL_USER: dev
       MYSQL_PASSWORD: pass
       TZ: 'Asia/Tokyo'
