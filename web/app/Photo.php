@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Photo
@@ -25,20 +26,20 @@ use Illuminate\Support\Arr;
  */
 class Photo extends Model
 {
-    protected $keyType = "string";
+  protected $keyType = "string";
 
-    public $incrementing = false;
+  public $incrementing = false;
 
-    const ID_LENGTH = 12;
+  const ID_LENGTH = 12;
 
-    public function __construct(array $attributes = [])
-    {
-      parent::__construct($attributes);
+  public function __construct(array $attributes = [])
+  {
+    parent::__construct($attributes);
 
-      if (! Arr::get($this->attributes, 'id')) {
-        $this->setId();
-      }
+    if (!Arr::get($this->attributes, 'id')) {
+      $this->setId();
     }
+  }
 
   private function setId()
   {
@@ -61,5 +62,23 @@ class Photo extends Model
     }
 
     return $id;
+  }
+
+  public function getUrlAttribute()
+  {
+    return Storage::disk("local")->url($this->attributes['filename']);
+  }
+
+  protected $appends = [
+    'url',
+  ];
+
+  protected $visible = [
+    'id', 'owner', 'url',
+  ];
+
+  public function owner()
+  {
+    return $this->belongsTo('App\User', 'user_id', 'id', 'users');
   }
 }

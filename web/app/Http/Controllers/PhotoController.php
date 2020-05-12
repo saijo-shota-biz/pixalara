@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePhoto;
 use App\Photo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +13,16 @@ class PhotoController extends Controller
   public function __construct()
   {
     // 認証が必要
-    $this->middleware('auth');
+    $this->middleware('auth')->except(["index", "download"]);
+  }
+
+  public function index()
+  {
+    $photos = Photo::with(["owner"])
+      ->orderBy(Photo::CREATED_AT, "desc")
+      ->paginate();
+
+    return $photos;
   }
 
   public function create(StorePhoto $request)
@@ -39,5 +47,20 @@ class PhotoController extends Controller
     }
 
     return response($photo, 201);
+  }
+
+  public function download(Photo $photo)
+  {
+    if (!Storage::disk("local")->exists($photo->filename)) {
+      abort(404);
+    }
+
+    $disposition = 'attachment; filename="' . $photo->filename . '"';
+    $headers = [
+      'Content-Type' => 'application/octet-stream',
+      'Content-Disposition' => $disposition,
+    ];
+
+    return response(Storage::disk("local")->get($photo->filename), 200, $headers);
   }
 }
