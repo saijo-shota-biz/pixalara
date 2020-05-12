@@ -38845,6 +38845,8 @@ var react_router_dom_2 = __webpack_require__(/*! react-router-dom */ "./node_mod
 var GuardRoute_1 = __importDefault(__webpack_require__(/*! ./components/GuardRoute */ "./resources/ts/components/GuardRoute.tsx"));
 var error_2 = __webpack_require__(/*! ./store/error */ "./resources/ts/store/error.ts");
 var ResposeCode_1 = __webpack_require__(/*! ./const/ResposeCode */ "./resources/ts/const/ResposeCode.ts");
+var PhotoDetail_1 = __importDefault(__webpack_require__(/*! ./pages/PhotoDetail */ "./resources/ts/pages/PhotoDetail.tsx"));
+var Message_1 = __importDefault(__webpack_require__(/*! ./components/Message */ "./resources/ts/components/Message.tsx"));
 var App = function () {
     var isLogin = react_redux_1.useSelector(auth_1.isLoginSelector);
     var errorCode = react_redux_1.useSelector(error_1.errorCodeSelector);
@@ -38861,9 +38863,11 @@ var App = function () {
             react_1.default.createElement(Navbar_1.default, null)),
         react_1.default.createElement("main", null,
             react_1.default.createElement("div", { className: "container" },
+                react_1.default.createElement(Message_1.default, null),
                 react_1.default.createElement(react_router_dom_1.Switch, null,
                     isLogin ? react_1.default.createElement(react_router_dom_1.Redirect, { path: "/login", to: "/" }) : react_1.default.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "/500", component: SystemError_1.default }),
+                    react_1.default.createElement(GuardRoute_1.default, { path: "/photos/:id", component: PhotoDetail_1.default }),
                     react_1.default.createElement(GuardRoute_1.default, { path: "/", component: PhotoList_1.default })))),
         react_1.default.createElement(Footer_1.default, null)));
 };
@@ -38978,6 +38982,32 @@ exports.default = GuardRoute;
 
 /***/ }),
 
+/***/ "./resources/ts/components/Loader.tsx":
+/*!********************************************!*\
+  !*** ./resources/ts/components/Loader.tsx ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var Loader = function (_a) {
+    var _b = _a.children, children = _b === void 0 ? "Loading" : _b;
+    return (react_1.default.createElement("div", { className: "loader" },
+        react_1.default.createElement("p", { className: "loading__text" }, children),
+        react_1.default.createElement("div", { className: "loader__item loader__item--heart" },
+            react_1.default.createElement("div", null))));
+};
+exports.default = Loader;
+
+
+/***/ }),
+
 /***/ "./resources/ts/components/LoginForm.tsx":
 /*!***********************************************!*\
   !*** ./resources/ts/components/LoginForm.tsx ***!
@@ -39084,10 +39114,10 @@ exports.default = LoginForm;
 
 /***/ }),
 
-/***/ "./resources/ts/components/Navbar.tsx":
-/*!********************************************!*\
-  !*** ./resources/ts/components/Navbar.tsx ***!
-  \********************************************/
+/***/ "./resources/ts/components/Message.tsx":
+/*!*********************************************!*\
+  !*** ./resources/ts/components/Message.tsx ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39098,23 +39128,220 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var message_1 = __webpack_require__(/*! ../store/message */ "./resources/ts/store/message.ts");
+var Message = function () {
+    var message = react_redux_1.useSelector(message_1.messageSelector);
+    return message ? (react_1.default.createElement("div", { className: "message" }, message)) : (react_1.default.createElement(react_1.default.Fragment, null));
+};
+exports.default = Message;
+
+
+/***/ }),
+
+/***/ "./resources/ts/components/Navbar.tsx":
+/*!********************************************!*\
+  !*** ./resources/ts/components/Navbar.tsx ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var auth_1 = __webpack_require__(/*! ../store/auth */ "./resources/ts/store/auth.ts");
+var PhotoForm_1 = __importDefault(__webpack_require__(/*! ./PhotoForm */ "./resources/ts/components/PhotoForm.tsx"));
 var Navbar = function () {
     var isLogin = react_redux_1.useSelector(auth_1.isLoginSelector);
     var userName = react_redux_1.useSelector(auth_1.userNameSelector);
+    var _a = react_1.useState(false), showForm = _a[0], setShowForm = _a[1];
+    var handleOnClickSubmitPhotoButton = function () {
+        setShowForm(function (state) { return !state; });
+    };
+    var handleOnClosePhotoForm = function () {
+        setShowForm(false);
+    };
     return (react_1.default.createElement("nav", { className: "navbar" },
         react_1.default.createElement(react_router_dom_1.Link, { className: "navbar__brand", to: "/" }, "Pixalara"),
         react_1.default.createElement("div", { className: "navbar__menu" }, isLogin ? (react_1.default.createElement(react_1.default.Fragment, null,
             react_1.default.createElement("div", { className: "navbar__item" },
-                react_1.default.createElement("button", { className: "button" },
+                react_1.default.createElement("button", { className: "button", onClick: handleOnClickSubmitPhotoButton },
                     react_1.default.createElement("i", { className: "icon ion-md-add" }),
                     "Submit a photo")),
             react_1.default.createElement("span", { className: "navbar__item" }, userName))) : (react_1.default.createElement("div", { className: "navbar__item" },
-            react_1.default.createElement(react_router_dom_1.Link, { className: "button button--link", to: "/login" }, "Login / Register"))))));
+            react_1.default.createElement(react_router_dom_1.Link, { className: "button button--link", to: "/login" }, "Login / Register")))),
+        react_1.default.createElement(PhotoForm_1.default, { open: showForm, onClose: handleOnClosePhotoForm })));
 };
 exports.default = Navbar;
+
+
+/***/ }),
+
+/***/ "./resources/ts/components/PhotoForm.tsx":
+/*!***********************************************!*\
+  !*** ./resources/ts/components/PhotoForm.tsx ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+var Http_1 = __importDefault(__webpack_require__(/*! ../utils/Http */ "./resources/ts/utils/Http.ts"));
+var ResposeCode_1 = __webpack_require__(/*! ../const/ResposeCode */ "./resources/ts/const/ResposeCode.ts");
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var error_1 = __webpack_require__(/*! ../store/error */ "./resources/ts/store/error.ts");
+var Loader_1 = __importDefault(__webpack_require__(/*! ./Loader */ "./resources/ts/components/Loader.tsx"));
+var message_1 = __webpack_require__(/*! ../store/message */ "./resources/ts/store/message.ts");
+var PhotoForm = function (_a) {
+    var open = _a.open, onClose = _a.onClose;
+    var _b = react_1.useState(null), preview = _b[0], setPreview = _b[1];
+    var _c = react_1.useState(null), photo = _c[0], setPhoto = _c[1];
+    var _d = react_1.useState(null), errors = _d[0], setErrors = _d[1];
+    var _e = react_1.useState(false), loading = _e[0], setLoading = _e[1];
+    var history = react_router_dom_1.useHistory();
+    var dispatch = react_redux_1.useDispatch();
+    react_1.useEffect(function () {
+        setPhoto(null);
+        setPreview(null);
+    }, [open]);
+    var handleOnSubmit = function (event) {
+        event.preventDefault();
+    };
+    var handleOnChangeFileInput = function (event) {
+        if (!event.target.files) {
+            setPhoto(null);
+            setPreview(null);
+            return false;
+        }
+        if (event.target.files.length === 0) {
+            setPhoto(null);
+            setPreview(null);
+            return false;
+        }
+        if (!event.target.files[0].type.match("image.*")) {
+            setPhoto(null);
+            setPreview(null);
+            return false;
+        }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            if (!e.target) {
+                setPhoto(null);
+                setPreview(null);
+                return false;
+            }
+            if (typeof e.target.result === "string") {
+                setPreview(e.target.result);
+            }
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        setPhoto(event.target.files[0]);
+    };
+    var handleOnClickSubmitButton = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var formData, res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!photo) {
+                        return [2 /*return*/, false];
+                    }
+                    setLoading(true);
+                    formData = new FormData();
+                    formData.append("photo", photo);
+                    return [4 /*yield*/, Http_1.default.post("/api/photos", formData)];
+                case 1:
+                    res = _a.sent();
+                    setLoading(false);
+                    if (res.status === ResposeCode_1.UNPROCESSABLE_ENTITY) {
+                        setErrors(res.data.errors);
+                        return [2 /*return*/, false];
+                    }
+                    if (res.status !== ResposeCode_1.CREATED) {
+                        dispatch(error_1.setErrorCode(res.status));
+                        onClose();
+                        return [2 /*return*/, false];
+                    }
+                    onClose();
+                    dispatch(message_1.setMessage("写真が投稿されました！"));
+                    history.push("/photos/" + res.data.id);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    return open ? (react_1.default.createElement("div", { className: "photo-form" },
+        react_1.default.createElement("h2", { className: "title" }, "Submit a photo"),
+        loading ? (react_1.default.createElement(Loader_1.default, null)) : (react_1.default.createElement("form", { className: "form", onSubmit: handleOnSubmit },
+            errors && (react_1.default.createElement("div", { className: "errors" },
+                react_1.default.createElement("ul", null, errors.photo.map(function (msg) { return react_1.default.createElement("li", { key: msg }, msg); })))),
+            react_1.default.createElement("input", { className: "form__item", type: "file", onChange: handleOnChangeFileInput, accept: ".png,.jpg,.jpeg,.svg,.gif" }),
+            preview && (react_1.default.createElement("output", { className: "form__output" },
+                react_1.default.createElement("img", { src: preview, alt: "upload file" }))),
+            react_1.default.createElement("div", { className: "form__button" },
+                react_1.default.createElement("button", { className: "button button--inverse", onClick: handleOnClickSubmitButton }, "submit")))))) : (react_1.default.createElement(react_1.default.Fragment, null));
+};
+exports.default = PhotoForm;
 
 
 /***/ }),
@@ -39364,6 +39591,28 @@ var Login = function () {
                 : react_1.default.createElement(react_1.default.Fragment, null)));
 };
 exports.default = Login;
+
+
+/***/ }),
+
+/***/ "./resources/ts/pages/PhotoDetail.tsx":
+/*!********************************************!*\
+  !*** ./resources/ts/pages/PhotoDetail.tsx ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var PhotoDetail = function () {
+    return (react_1.default.createElement("h1", null, "Photo Detail"));
+};
+exports.default = PhotoDetail;
 
 
 /***/ }),
@@ -39620,6 +39869,38 @@ exports.default = error.reducer;
 
 /***/ }),
 
+/***/ "./resources/ts/store/message.ts":
+/*!***************************************!*\
+  !*** ./resources/ts/store/message.ts ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+var message = toolkit_1.createSlice({
+    name: "message",
+    initialState: {
+        content: null,
+    },
+    reducers: {
+        setMessage: function (state, action) {
+            state.content = action.payload;
+            setTimeout(function () {
+                state.content = null;
+            }, 5000);
+        },
+    },
+});
+exports.setMessage = message.actions.setMessage;
+exports.messageSelector = function (state) { return state.message.content; };
+exports.default = message.reducer;
+
+
+/***/ }),
+
 /***/ "./resources/ts/store/store.ts":
 /*!*************************************!*\
   !*** ./resources/ts/store/store.ts ***!
@@ -39636,10 +39917,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 var auth_1 = __importDefault(__webpack_require__(/*! ./auth */ "./resources/ts/store/auth.ts"));
 var error_1 = __importDefault(__webpack_require__(/*! ./error */ "./resources/ts/store/error.ts"));
+var message_1 = __importDefault(__webpack_require__(/*! ./message */ "./resources/ts/store/message.ts"));
 var store = toolkit_1.configureStore({
     reducer: {
         auth: auth_1.default,
         error: error_1.default,
+        message: message_1.default,
     }
 });
 exports.default = store;

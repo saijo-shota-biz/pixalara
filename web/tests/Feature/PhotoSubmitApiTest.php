@@ -40,7 +40,8 @@ class PhotoSubmitApiTest extends TestCase
 
     $photo = Photo::first();
 
-    $this->assertRegExp('/^[0-9a-zA-Z-_]{12}$/', $photo->id);
+
+    $response->assertJson(["id" => $photo->id]);
     Storage::disk("local")->assertExists($photo->filename);
   }
 

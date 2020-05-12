@@ -12,6 +12,8 @@ import {useHistory} from "react-router-dom";
 import GuardRoute from "./components/GuardRoute";
 import {setErrorCode} from "./store/error";
 import {INTERNAL_SERVER_ERROR} from "./const/ResposeCode";
+import PhotoDetail from "./pages/PhotoDetail";
+import Message from "./components/Message";
 
 const App = () => {
 
@@ -36,11 +38,14 @@ const App = () => {
       <main>
         <div className="container">
 
+          <Message/>
+
           <Switch>
             {
               isLogin ? <Redirect path="/login" to="/"/> : <Route path="/login" component={Login}/>
             }
             <Route path="/500" component={SystemError}/>
+            <GuardRoute path="/photos/:id" component={PhotoDetail}/>
             <GuardRoute path="/" component={PhotoList}/>
           </Switch>
 

@@ -1,12 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {isLoginSelector, userNameSelector} from "../store/auth";
+import PhotoForm from "./PhotoForm";
 
 const Navbar = () => {
 
   const isLogin = useSelector(isLoginSelector);
   const userName = useSelector(userNameSelector);
+  const [showForm, setShowForm] = useState(false);
+
+  const handleOnClickSubmitPhotoButton = () => {
+    setShowForm(state => !state);
+  }
+
+  const handleOnClosePhotoForm = () => {
+    setShowForm(false);
+  }
 
   return (
     <nav className="navbar">
@@ -18,7 +28,7 @@ const Navbar = () => {
           isLogin ? (
             <>
               <div className="navbar__item">
-                <button className="button">
+                <button className="button" onClick={handleOnClickSubmitPhotoButton}>
                   <i className="icon ion-md-add"/>
                   Submit a photo
                 </button>
@@ -34,6 +44,7 @@ const Navbar = () => {
           )
         }
       </div>
+      <PhotoForm open={showForm} onClose={handleOnClosePhotoForm} />
     </nav>
   );
 }

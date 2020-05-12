@@ -27,6 +27,8 @@ class Photo extends Model
 {
     protected $keyType = "string";
 
+    public $incrementing = false;
+
     const ID_LENGTH = 12;
 
     public function __construct(array $attributes = [])
