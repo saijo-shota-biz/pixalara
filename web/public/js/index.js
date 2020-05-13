@@ -39190,6 +39190,72 @@ exports.default = Navbar;
 
 /***/ }),
 
+/***/ "./resources/ts/components/Pagination.tsx":
+/*!************************************************!*\
+  !*** ./resources/ts/components/Pagination.tsx ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+var Pagination = function (_a) {
+    var currentPage = _a.currentPage, lastPage = _a.lastPage;
+    var isFirstPage = currentPage === 1;
+    var isLastPage = currentPage === lastPage;
+    return (react_1.default.createElement("div", { className: "pagination" },
+        isFirstPage || react_1.default.createElement(react_router_dom_1.Link, { to: "/?page=" + (currentPage - 1), className: "button" }, "\u00AB prev"),
+        isLastPage || react_1.default.createElement(react_router_dom_1.Link, { to: "/?page=" + (currentPage + 1), className: "button" }, "next \u00BB")));
+};
+exports.default = Pagination;
+
+
+/***/ }),
+
+/***/ "./resources/ts/components/Photo.tsx":
+/*!*******************************************!*\
+  !*** ./resources/ts/components/Photo.tsx ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+var Photo = function (_a) {
+    var photo = _a.photo, className = _a.className;
+    var handleOnClickDownloadLink = function (event) {
+        event.preventDefault();
+        window.location.href = "/photos/" + photo.id + "/download";
+    };
+    return (react_1.default.createElement("div", { className: "photo " + className },
+        react_1.default.createElement("figure", { className: "photo__wrapper" },
+            react_1.default.createElement("img", { className: "photo__image", src: photo.url, alt: "Photo by " + photo.owner.name })),
+        react_1.default.createElement(react_router_dom_1.Link, { className: "photo__overlay", to: "/photos/" + photo.id, title: "View the photo by " + photo.owner.name },
+            react_1.default.createElement("div", { className: "photo__controls" },
+                react_1.default.createElement("button", { className: "photo__action photo__action--like", title: "Like photo" },
+                    react_1.default.createElement("i", { className: "icon ion-md-heart" }),
+                    "12"),
+                react_1.default.createElement("div", { className: "photo__action", title: "Download photo", onClick: handleOnClickDownloadLink },
+                    react_1.default.createElement("i", { className: "icon ion-md-arrow-round-down" }))),
+            react_1.default.createElement("div", { className: "photo__username" }, photo.owner.name))));
+};
+exports.default = Photo;
+
+
+/***/ }),
+
 /***/ "./resources/ts/components/PhotoForm.tsx":
 /*!***********************************************!*\
   !*** ./resources/ts/components/PhotoForm.tsx ***!
@@ -39324,7 +39390,7 @@ var PhotoForm = function (_a) {
                         return [2 /*return*/, false];
                     }
                     onClose();
-                    dispatch(message_1.setMessage("写真が投稿されました！"));
+                    dispatch(message_1.setTempMessage("写真が投稿されました！"));
                     history.push("/photos/" + res.data.id);
                     return [2 /*return*/];
             }
@@ -39626,13 +39692,93 @@ exports.default = PhotoDetail;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var Photo_1 = __importDefault(__webpack_require__(/*! ../components/Photo */ "./resources/ts/components/Photo.tsx"));
+var Http_1 = __importDefault(__webpack_require__(/*! ../utils/Http */ "./resources/ts/utils/Http.ts"));
+var ResposeCode_1 = __webpack_require__(/*! ../const/ResposeCode */ "./resources/ts/const/ResposeCode.ts");
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var error_1 = __webpack_require__(/*! ../store/error */ "./resources/ts/store/error.ts");
+var Pagination_1 = __importDefault(__webpack_require__(/*! ../components/Pagination */ "./resources/ts/components/Pagination.tsx"));
+var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 var PhotoList = function () {
-    return (react_1.default.createElement("h1", null, "Photo List"));
+    var _a = react_1.useState([]), photoList = _a[0], setPhotoList = _a[1];
+    var _b = react_1.useState(0), currentPage = _b[0], setCurrentPage = _b[1];
+    var _c = react_1.useState(0), lastPage = _c[0], setLastPage = _c[1];
+    var dispatch = react_redux_1.useDispatch();
+    var query = new URLSearchParams(react_router_dom_1.useLocation().search);
+    var page = query.get("page") || "1";
+    react_1.useEffect(function () {
+        fetchPhotos();
+        window.scrollTo(0, 0);
+    }, [page]);
+    var fetchPhotos = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Http_1.default.get("/api/photos/?page=" + page)];
+                case 1:
+                    response = _a.sent();
+                    if (response.status !== ResposeCode_1.OK) {
+                        dispatch(error_1.setErrorCode(response.status));
+                        return [2 /*return*/, false];
+                    }
+                    setPhotoList(response.data.data);
+                    setCurrentPage(response.data.current_page);
+                    setLastPage(response.data.last_page);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    return (react_1.default.createElement("div", { className: "photo-list" },
+        react_1.default.createElement("div", { className: "grid" }, photoList.map(function (photo) { return (react_1.default.createElement(Photo_1.default, { photo: photo, className: "grid__item", key: photo.id })); })),
+        react_1.default.createElement(Pagination_1.default, { currentPage: currentPage, lastPage: lastPage })));
 };
 exports.default = PhotoList;
 
@@ -39878,6 +40024,42 @@ exports.default = error.reducer;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 var message = toolkit_1.createSlice({
@@ -39888,14 +40070,20 @@ var message = toolkit_1.createSlice({
     reducers: {
         setMessage: function (state, action) {
             state.content = action.payload;
-            setTimeout(function () {
-                state.content = null;
-            }, 5000);
         },
     },
 });
 exports.setMessage = message.actions.setMessage;
 exports.messageSelector = function (state) { return state.message.content; };
+exports.setTempMessage = function (content) { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        dispatch(exports.setMessage(content));
+        setTimeout(function () {
+            dispatch(exports.setMessage(null));
+        }, 5000);
+        return [2 /*return*/];
+    });
+}); }; };
 exports.default = message.reducer;
 
 

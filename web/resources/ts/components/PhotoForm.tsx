@@ -5,7 +5,7 @@ import {CREATED, UNPROCESSABLE_ENTITY} from "../const/ResposeCode";
 import {useDispatch} from "react-redux";
 import {setErrorCode} from "../store/error";
 import Loader from "./Loader";
-import {setMessage} from "../store/message";
+import {setTempMessage} from "../store/message";
 
 type PhotoFormProp = {
   open: boolean;
@@ -98,7 +98,7 @@ const PhotoForm: React.FC<PhotoFormProp> = ({open, onClose}) => {
 
     onClose();
 
-    dispatch(setMessage("写真が投稿されました！"));
+    dispatch(setTempMessage("写真が投稿されました！"));
 
     history.push(`/photos/${res.data.id}`);
   }

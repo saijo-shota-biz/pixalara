@@ -66,7 +66,7 @@ class Photo extends Model
 
   public function getUrlAttribute()
   {
-    return Storage::disk("local")->url($this->attributes['filename']);
+    return asset('storage/' . $this->attributes['filename']);
   }
 
   protected $appends = [
@@ -76,6 +76,8 @@ class Photo extends Model
   protected $visible = [
     'id', 'owner', 'url',
   ];
+
+  protected $perPage = 5;
 
   public function owner()
   {
