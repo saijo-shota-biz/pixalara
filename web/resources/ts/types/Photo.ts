@@ -4,5 +4,12 @@ export type Photo = {
   owner: {
     id: string;
     name: string;
-  }
+  },
+  comments: {
+    content: string;
+    author: {
+      id: string;
+      name: string;
+    },
+  }[],
 }

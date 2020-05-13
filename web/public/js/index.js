@@ -38842,7 +38842,6 @@ var auth_1 = __webpack_require__(/*! ./store/auth */ "./resources/ts/store/auth.
 var SystemError_1 = __importDefault(__webpack_require__(/*! ./pages/error/SystemError */ "./resources/ts/pages/error/SystemError.tsx"));
 var error_1 = __webpack_require__(/*! ./store/error */ "./resources/ts/store/error.ts");
 var react_router_dom_2 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-var GuardRoute_1 = __importDefault(__webpack_require__(/*! ./components/GuardRoute */ "./resources/ts/components/GuardRoute.tsx"));
 var error_2 = __webpack_require__(/*! ./store/error */ "./resources/ts/store/error.ts");
 var ResposeCode_1 = __webpack_require__(/*! ./const/ResposeCode */ "./resources/ts/const/ResposeCode.ts");
 var PhotoDetail_1 = __importDefault(__webpack_require__(/*! ./pages/PhotoDetail */ "./resources/ts/pages/PhotoDetail.tsx"));
@@ -38867,8 +38866,8 @@ var App = function () {
                 react_1.default.createElement(react_router_dom_1.Switch, null,
                     isLogin ? react_1.default.createElement(react_router_dom_1.Redirect, { path: "/login", to: "/" }) : react_1.default.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "/500", component: SystemError_1.default }),
-                    react_1.default.createElement(GuardRoute_1.default, { path: "/photos/:id", component: PhotoDetail_1.default }),
-                    react_1.default.createElement(GuardRoute_1.default, { path: "/", component: PhotoList_1.default })))),
+                    react_1.default.createElement(react_router_dom_1.Route, { path: "/photos/:id", component: PhotoDetail_1.default }),
+                    react_1.default.createElement(react_router_dom_1.Route, { path: "/", component: PhotoList_1.default })))),
         react_1.default.createElement(Footer_1.default, null)));
 };
 exports.default = App;
@@ -38951,33 +38950,6 @@ var Footer = function () {
     return (react_1.default.createElement("footer", { className: "footer" }, isLogin ? (react_1.default.createElement("button", { className: "button button--link", onClick: handleOnClickLogoutBtn }, "Logout")) : (react_1.default.createElement(react_router_dom_1.Link, { className: "button button--link", to: "/login" }, "Login / Register"))));
 };
 exports.default = Footer;
-
-
-/***/ }),
-
-/***/ "./resources/ts/components/GuardRoute.tsx":
-/*!************************************************!*\
-  !*** ./resources/ts/components/GuardRoute.tsx ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var auth_1 = __webpack_require__(/*! ../store/auth */ "./resources/ts/store/auth.ts");
-var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-var GuardRoute = function (_a) {
-    var path = _a.path, component = _a.component;
-    var isLogin = react_redux_1.useSelector(auth_1.isLoginSelector);
-    return isLogin ? react_1.default.createElement(react_router_dom_1.Route, { exact: true, path: path, component: component }) : react_1.default.createElement(react_router_dom_1.Redirect, { to: "/login" });
-};
-exports.default = GuardRoute;
 
 
 /***/ }),
@@ -39670,13 +39642,144 @@ exports.default = Login;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+var Http_1 = __importDefault(__webpack_require__(/*! ../utils/Http */ "./resources/ts/utils/Http.ts"));
+var ResposeCode_1 = __webpack_require__(/*! ../const/ResposeCode */ "./resources/ts/const/ResposeCode.ts");
+var error_1 = __webpack_require__(/*! ../store/error */ "./resources/ts/store/error.ts");
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var auth_1 = __webpack_require__(/*! ../store/auth */ "./resources/ts/store/auth.ts");
 var PhotoDetail = function () {
-    return (react_1.default.createElement("h1", null, "Photo Detail"));
+    var isLogin = react_redux_1.useSelector(auth_1.isLoginSelector);
+    var _a = react_1.useState(null), photo = _a[0], setPhoto = _a[1];
+    var _b = react_1.useState(false), fullWidth = _b[0], setFullWidth = _b[1];
+    // comment form
+    var _c = react_1.useState(""), content = _c[0], setContent = _c[1];
+    var _d = react_1.useState([]), commentApiErrors = _d[0], setCommentApiError = _d[1];
+    var id = react_router_dom_1.useParams().id;
+    var dispatch = react_redux_1.useDispatch();
+    react_1.useEffect(function () {
+        fetchPhoto();
+    }, [id]);
+    var fetchPhoto = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Http_1.default.get("/api/photos/" + id)];
+                case 1:
+                    response = _a.sent();
+                    if (response.status !== ResposeCode_1.OK) {
+                        dispatch(error_1.setErrorCode(response.status));
+                        return [2 /*return*/, false];
+                    }
+                    setPhoto(response.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleOnClick = function () {
+        setFullWidth(function (state) { return !state; });
+    };
+    var handleOnChangeContent = function (event) {
+        setContent(event.target.value);
+    };
+    var handleOnSubmitComment = function (event) {
+        event.preventDefault();
+    };
+    var handleOnClickAddComment = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Http_1.default.post("/api/photos/" + id + "/comments", { content: content })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status === ResposeCode_1.UNPROCESSABLE_ENTITY) {
+                        setCommentApiError(response.data.errors.content);
+                        return [2 /*return*/, false];
+                    }
+                    setContent("");
+                    setCommentApiError([]);
+                    if (response.status !== ResposeCode_1.CREATED) {
+                        dispatch(error_1.setErrorCode(response.status));
+                        return [2 /*return*/, false];
+                    }
+                    fetchPhoto();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    return photo ? (react_1.default.createElement("div", { className: "photo-detail " + (fullWidth ? "photo-detail--column" : "") },
+        react_1.default.createElement("figure", { className: "photo-detail__pane photo-detail__image", onClick: handleOnClick },
+            react_1.default.createElement("img", { src: photo.url, alt: "Posted by " + photo.owner.name }),
+            react_1.default.createElement("figcaption", null,
+                "Posted by ",
+                photo.owner.name)),
+        react_1.default.createElement("div", { className: "photo-detail__pane" },
+            react_1.default.createElement("button", { className: "button button--like", title: "Like photo" },
+                react_1.default.createElement("i", { className: "icon ion-md-heart" }),
+                "12"),
+            react_1.default.createElement("a", { href: "/photos/" + photo.id + "/download", className: "button", title: "Download photo" },
+                react_1.default.createElement("i", { className: "icon ion-md-arrow-round-down" }),
+                "Download"),
+            react_1.default.createElement("h2", { className: "photo-detail__title" },
+                react_1.default.createElement("i", { className: "icon ion-md-chatboxes" }),
+                "Comments"),
+            photo.comments.length > 0 ? (react_1.default.createElement("ul", { className: "photo-detail__comments" }, photo.comments.map(function (comment) { return (react_1.default.createElement("li", { className: "photo-detail__commentItem", key: comment.content },
+                react_1.default.createElement("p", { className: "photo-detail__commentBody" }, comment.content),
+                react_1.default.createElement("p", { className: "photo-detail__commentInfo" }, comment.author.name))); }))) : react_1.default.createElement("p", null, "No comments yet."),
+            isLogin && (react_1.default.createElement("form", { className: "form", onSubmit: handleOnSubmitComment },
+                commentApiErrors.length > 0 && (react_1.default.createElement("div", { className: "errors" },
+                    react_1.default.createElement("ul", null, commentApiErrors.map(function (error) { return (react_1.default.createElement("li", { key: error }, error)); })))),
+                react_1.default.createElement("textarea", { className: "form__item", value: content, onChange: handleOnChangeContent }),
+                react_1.default.createElement("div", { className: "form__button" },
+                    react_1.default.createElement("button", { className: "button button--inverse", onClick: handleOnClickAddComment }, "submit comment"))))))) : react_1.default.createElement(react_1.default.Fragment, null);
 };
 exports.default = PhotoDetail;
 

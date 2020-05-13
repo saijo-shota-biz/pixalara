@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read mixed $url
+ * @property-read \App\User $owner
  */
 class Photo extends Model
 {
@@ -74,13 +78,18 @@ class Photo extends Model
   ];
 
   protected $visible = [
-    'id', 'owner', 'url',
+    'id', 'owner', 'url', 'comments'
   ];
 
-  protected $perPage = 5;
+  protected $perPage = 9;
 
   public function owner()
   {
     return $this->belongsTo('App\User', 'user_id', 'id', 'users');
+  }
+
+  public function comments()
+  {
+    return $this->hasMany('App\Comment')->orderBy('id', 'desc');
   }
 }

@@ -45,8 +45,8 @@ const App = () => {
               isLogin ? <Redirect path="/login" to="/"/> : <Route path="/login" component={Login}/>
             }
             <Route path="/500" component={SystemError}/>
-            <GuardRoute path="/photos/:id" component={PhotoDetail}/>
-            <GuardRoute path="/" component={PhotoList}/>
+            <Route path="/photos/:id" component={PhotoDetail}/>
+            <Route path="/" component={PhotoList}/>
           </Switch>
 
         </div>

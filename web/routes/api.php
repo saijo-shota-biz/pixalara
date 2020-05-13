@@ -10,4 +10,8 @@ Route::get('/user', fn() => Auth::user())->name('user');
 
 // Photo
 Route::get('/photos', 'PhotoController@index')->name('photo.index');
+Route::get('/photos/{id}', 'PhotoController@show')->name('photo.show');
 Route::post('/photos', 'PhotoController@create')->name('photo.create');
+
+// Comments
+Route::post('/photos/{photo}/comments', 'PhotoController@addComment')->name('photo.comment');
