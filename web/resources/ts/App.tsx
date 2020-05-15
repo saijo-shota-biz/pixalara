@@ -9,11 +9,13 @@ import {isLoginSelector} from "./store/auth";
 import SystemError from "./pages/error/SystemError";
 import {errorCodeSelector} from "./store/error";
 import {useHistory} from "react-router-dom";
-import GuardRoute from "./components/GuardRoute";
 import {setErrorCode} from "./store/error";
-import {INTERNAL_SERVER_ERROR} from "./const/ResposeCode";
+import {INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED} from "./const/ResposeCode";
 import PhotoDetail from "./pages/PhotoDetail";
 import Message from "./components/Message";
+import Http from "./utils/Http";
+import {setUser} from "./store/auth";
+import NotFound from "./pages/error/NotFound";
 
 const App = () => {
 
@@ -25,8 +27,16 @@ const App = () => {
 
   useEffect(() => {
     if (errorCode === INTERNAL_SERVER_ERROR) {
-      history.push(`/500`);
+      history.push("/500");
       dispatch(setErrorCode(null));
+    } else if (errorCode === UNAUTHORIZED) {
+      Http.get("/api/refresh-token")
+        .then(() => {
+          dispatch(setUser(null));
+          history.push("/login")
+        });
+    } else if (errorCode === NOT_FOUND) {
+      history.push("/404");
     }
   }, [errorCode]);
 
@@ -47,6 +57,7 @@ const App = () => {
             <Route path="/500" component={SystemError}/>
             <Route path="/photos/:id" component={PhotoDetail}/>
             <Route path="/" component={PhotoList}/>
+            <Route path="*" component={NotFound}/>
           </Switch>
 
         </div>

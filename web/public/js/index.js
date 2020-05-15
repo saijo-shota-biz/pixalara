@@ -38846,6 +38846,9 @@ var error_2 = __webpack_require__(/*! ./store/error */ "./resources/ts/store/err
 var ResposeCode_1 = __webpack_require__(/*! ./const/ResposeCode */ "./resources/ts/const/ResposeCode.ts");
 var PhotoDetail_1 = __importDefault(__webpack_require__(/*! ./pages/PhotoDetail */ "./resources/ts/pages/PhotoDetail.tsx"));
 var Message_1 = __importDefault(__webpack_require__(/*! ./components/Message */ "./resources/ts/components/Message.tsx"));
+var Http_1 = __importDefault(__webpack_require__(/*! ./utils/Http */ "./resources/ts/utils/Http.ts"));
+var auth_2 = __webpack_require__(/*! ./store/auth */ "./resources/ts/store/auth.ts");
+var NotFound_1 = __importDefault(__webpack_require__(/*! ./pages/error/NotFound */ "./resources/ts/pages/error/NotFound.tsx"));
 var App = function () {
     var isLogin = react_redux_1.useSelector(auth_1.isLoginSelector);
     var errorCode = react_redux_1.useSelector(error_1.errorCodeSelector);
@@ -38855,6 +38858,16 @@ var App = function () {
         if (errorCode === ResposeCode_1.INTERNAL_SERVER_ERROR) {
             history.push("/500");
             dispatch(error_2.setErrorCode(null));
+        }
+        else if (errorCode === ResposeCode_1.UNAUTHORIZED) {
+            Http_1.default.get("/api/refresh-token")
+                .then(function () {
+                dispatch(auth_2.setUser(null));
+                history.push("/login");
+            });
+        }
+        else if (errorCode === ResposeCode_1.NOT_FOUND) {
+            history.push("/404");
         }
     }, [errorCode]);
     return (react_1.default.createElement(react_1.default.Fragment, null,
@@ -38867,7 +38880,8 @@ var App = function () {
                     isLogin ? react_1.default.createElement(react_router_dom_1.Redirect, { path: "/login", to: "/" }) : react_1.default.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "/500", component: SystemError_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "/photos/:id", component: PhotoDetail_1.default }),
-                    react_1.default.createElement(react_router_dom_1.Route, { path: "/", component: PhotoList_1.default })))),
+                    react_1.default.createElement(react_router_dom_1.Route, { path: "/", component: PhotoList_1.default }),
+                    react_1.default.createElement(react_router_dom_1.Route, { path: "*", component: NotFound_1.default })))),
         react_1.default.createElement(Footer_1.default, null)));
 };
 exports.default = App;
@@ -39518,6 +39532,8 @@ exports.default = RegisterForm;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OK = 200;
 exports.CREATED = 201;
+exports.NOT_FOUND = 404;
+exports.UNAUTHORIZED = 419;
 exports.UNPROCESSABLE_ENTITY = 422;
 exports.INTERNAL_SERVER_ERROR = 500;
 
@@ -39949,6 +39965,28 @@ var PhotoList = function () {
         react_1.default.createElement(Pagination_1.default, { currentPage: currentPage, lastPage: lastPage })));
 };
 exports.default = PhotoList;
+
+
+/***/ }),
+
+/***/ "./resources/ts/pages/error/NotFound.tsx":
+/*!***********************************************!*\
+  !*** ./resources/ts/pages/error/NotFound.tsx ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var NotFound = function () {
+    return react_1.default.createElement("p", null, "\u304A\u63A2\u3057\u306E\u30DA\u30FC\u30B8\u306F\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\u3002");
+};
+exports.default = NotFound;
 
 
 /***/ }),
