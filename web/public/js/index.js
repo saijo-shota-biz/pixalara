@@ -38880,7 +38880,7 @@ var App = function () {
                     isLogin ? react_1.default.createElement(react_router_dom_1.Redirect, { path: "/login", to: "/" }) : react_1.default.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "/500", component: SystemError_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "/photos/:id", component: PhotoDetail_1.default }),
-                    react_1.default.createElement(react_router_dom_1.Route, { path: "/", component: PhotoList_1.default }),
+                    react_1.default.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: PhotoList_1.default }),
                     react_1.default.createElement(react_router_dom_1.Route, { path: "*", component: NotFound_1.default })))),
         react_1.default.createElement(Footer_1.default, null)));
 };

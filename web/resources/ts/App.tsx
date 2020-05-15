@@ -56,7 +56,7 @@ const App = () => {
             }
             <Route path="/500" component={SystemError}/>
             <Route path="/photos/:id" component={PhotoDetail}/>
-            <Route path="/" component={PhotoList}/>
+            <Route path="/" exact component={PhotoList}/>
             <Route path="*" component={NotFound}/>
           </Switch>
 
