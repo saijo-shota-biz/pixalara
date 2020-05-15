@@ -4,14 +4,20 @@ import {Link} from "react-router-dom";
 
 type PhotoProp = {
   photo: PhotoType;
+  onLike: (id: string, liked: boolean) => void;
   className?: string;
 }
 
-const Photo: React.FC<PhotoProp> = ({photo, className}) => {
+const Photo: React.FC<PhotoProp> = ({photo, onLike, className}) => {
 
   const handleOnClickDownloadLink = (event) => {
     event.preventDefault();
     window.location.href = `/photos/${photo.id}/download`;
+  }
+
+  const handleOnClickLike = (event: React.MouseEvent) => {
+    event.preventDefault();
+    onLike(photo.id, photo.liked_by_user);
   }
 
   return (
@@ -26,10 +32,11 @@ const Photo: React.FC<PhotoProp> = ({photo, className}) => {
       <Link className={"photo__overlay"} to={`/photos/${photo.id}`} title={`View the photo by ${photo.owner.name}`}>
         <div className="photo__controls">
           <button
-            className="photo__action photo__action--like"
+            className={`photo__action photo__action--like ${photo.liked_by_user ? "photo__action--liked" : ""}`}
             title="Like photo"
+            onClick={handleOnClickLike}
           >
-            <i className="icon ion-md-heart"/>12
+            <i className="icon ion-md-heart"/>{photo.likes_count}
           </button>
           <div
             className="photo__action"

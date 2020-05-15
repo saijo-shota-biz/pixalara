@@ -5,6 +5,8 @@ export type Photo = {
     id: string;
     name: string;
   },
+  likes_count: number,
+  liked_by_user: boolean,
   comments: {
     content: string;
     author: {

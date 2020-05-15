@@ -15,3 +15,7 @@ Route::post('/photos', 'PhotoController@create')->name('photo.create');
 
 // Comments
 Route::post('/photos/{photo}/comments', 'PhotoController@addComment')->name('photo.comment');
+
+// Likes
+Route::put('/photos/{id}/like', 'PhotoController@like')->name('photo.like');
+Route::delete('/photos/{id}/like', 'PhotoController@unlike');

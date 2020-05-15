@@ -40,7 +40,6 @@ class PhotoSubmitApiTest extends TestCase
 
     $photo = Photo::first();
 
-
     $response->assertJson(["id" => $photo->id]);
     Storage::disk("local")->assertExists($photo->filename);
   }

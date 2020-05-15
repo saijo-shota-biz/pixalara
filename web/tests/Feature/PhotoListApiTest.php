@@ -24,10 +24,12 @@ class PhotoListApiTest extends TestCase
     $expected = $photos->map(fn($photo) => [
       "id" => $photo->id,
       "url" => $photo->url,
-      "owner" =>  [
+      "owner" => [
         "id" => $photo->owner->id,
         "name" => $photo->owner->name,
       ],
+      "likes_count" => 0,
+      "liked_by_user" => false,
     ])->all();
 
     $response

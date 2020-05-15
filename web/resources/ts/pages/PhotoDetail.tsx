@@ -66,6 +66,33 @@ const PhotoDetail = () => {
     fetchPhoto();
   }
 
+  const handleOnClickLike = async () => {
+    if (!isLogin) {
+      alert('いいね機能を使うにはログインしてください。');
+      return false;
+    }
+
+    let res;
+    if (photo && photo.liked_by_user) {
+      res = await Http.delete(`/api/photos/${id}/like`);
+    } else {
+      res = await Http.put(`/api/photos/${id}/like`);
+    }
+
+    if (res.status !== OK) {
+      dispatch(setErrorCode(res.status));
+      return false;
+    }
+
+    fetchPhoto();
+  }
+
+  const like = () => {
+
+  }
+
+  const unlike = () => {}
+
   return photo ? (
     <div className={`photo-detail ${fullWidth ? "photo-detail--column" : ""}`}>
       <figure className="photo-detail__pane photo-detail__image" onClick={handleOnClick}>
@@ -73,8 +100,9 @@ const PhotoDetail = () => {
         <figcaption>Posted by {photo.owner.name}</figcaption>
       </figure>
       <div className="photo-detail__pane">
-        <button className="button button--like" title="Like photo">
-          <i className="icon ion-md-heart"/>12
+        <button className={`button button--like ${photo.liked_by_user ? "button--liked" : ""}`} title="Like photo"
+                onClick={handleOnClickLike}>
+          <i className="icon ion-md-heart"/>{photo.likes_count}
         </button>
         <a
           href={`/photos/${photo.id}/download`}

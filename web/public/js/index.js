@@ -39206,19 +39206,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 var Photo = function (_a) {
-    var photo = _a.photo, className = _a.className;
+    var photo = _a.photo, onLike = _a.onLike, className = _a.className;
     var handleOnClickDownloadLink = function (event) {
         event.preventDefault();
         window.location.href = "/photos/" + photo.id + "/download";
+    };
+    var handleOnClickLike = function (event) {
+        event.preventDefault();
+        onLike(photo.id, photo.liked_by_user);
     };
     return (react_1.default.createElement("div", { className: "photo " + className },
         react_1.default.createElement("figure", { className: "photo__wrapper" },
             react_1.default.createElement("img", { className: "photo__image", src: photo.url, alt: "Photo by " + photo.owner.name })),
         react_1.default.createElement(react_router_dom_1.Link, { className: "photo__overlay", to: "/photos/" + photo.id, title: "View the photo by " + photo.owner.name },
             react_1.default.createElement("div", { className: "photo__controls" },
-                react_1.default.createElement("button", { className: "photo__action photo__action--like", title: "Like photo" },
+                react_1.default.createElement("button", { className: "photo__action photo__action--like " + (photo.liked_by_user ? "photo__action--liked" : ""), title: "Like photo", onClick: handleOnClickLike },
                     react_1.default.createElement("i", { className: "icon ion-md-heart" }),
-                    "12"),
+                    photo.likes_count),
                 react_1.default.createElement("div", { className: "photo__action", title: "Download photo", onClick: handleOnClickDownloadLink },
                     react_1.default.createElement("i", { className: "icon ion-md-arrow-round-down" }))),
             react_1.default.createElement("div", { className: "photo__username" }, photo.owner.name))));
@@ -39755,6 +39759,37 @@ var PhotoDetail = function () {
             }
         });
     }); };
+    var handleOnClickLike = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!isLogin) {
+                        alert('いいね機能を使うにはログインしてください。');
+                        return [2 /*return*/, false];
+                    }
+                    if (!(photo && photo.liked_by_user)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, Http_1.default.delete("/api/photos/" + id + "/like")];
+                case 1:
+                    res = _a.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, Http_1.default.put("/api/photos/" + id + "/like")];
+                case 3:
+                    res = _a.sent();
+                    _a.label = 4;
+                case 4:
+                    if (res.status !== ResposeCode_1.OK) {
+                        dispatch(error_1.setErrorCode(res.status));
+                        return [2 /*return*/, false];
+                    }
+                    fetchPhoto();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var like = function () {
+    };
+    var unlike = function () { };
     return photo ? (react_1.default.createElement("div", { className: "photo-detail " + (fullWidth ? "photo-detail--column" : "") },
         react_1.default.createElement("figure", { className: "photo-detail__pane photo-detail__image", onClick: handleOnClick },
             react_1.default.createElement("img", { src: photo.url, alt: "Posted by " + photo.owner.name }),
@@ -39762,9 +39797,9 @@ var PhotoDetail = function () {
                 "Posted by ",
                 photo.owner.name)),
         react_1.default.createElement("div", { className: "photo-detail__pane" },
-            react_1.default.createElement("button", { className: "button button--like", title: "Like photo" },
+            react_1.default.createElement("button", { className: "button button--like " + (photo.liked_by_user ? "button--liked" : ""), title: "Like photo", onClick: handleOnClickLike },
                 react_1.default.createElement("i", { className: "icon ion-md-heart" }),
-                "12"),
+                photo.likes_count),
             react_1.default.createElement("a", { href: "/photos/" + photo.id + "/download", className: "button", title: "Download photo" },
                 react_1.default.createElement("i", { className: "icon ion-md-arrow-round-down" }),
                 "Download"),
@@ -39850,11 +39885,13 @@ var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react
 var error_1 = __webpack_require__(/*! ../store/error */ "./resources/ts/store/error.ts");
 var Pagination_1 = __importDefault(__webpack_require__(/*! ../components/Pagination */ "./resources/ts/components/Pagination.tsx"));
 var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+var auth_1 = __webpack_require__(/*! ../store/auth */ "./resources/ts/store/auth.ts");
 var PhotoList = function () {
     var _a = react_1.useState([]), photoList = _a[0], setPhotoList = _a[1];
     var _b = react_1.useState(0), currentPage = _b[0], setCurrentPage = _b[1];
     var _c = react_1.useState(0), lastPage = _c[0], setLastPage = _c[1];
     var dispatch = react_redux_1.useDispatch();
+    var isLogin = react_redux_1.useSelector(auth_1.isLoginSelector);
     var query = new URLSearchParams(react_router_dom_1.useLocation().search);
     var page = query.get("page") || "1";
     react_1.useEffect(function () {
@@ -39879,8 +39916,36 @@ var PhotoList = function () {
             }
         });
     }); };
+    var handleOnLike = function (id, liked) { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!isLogin) {
+                        alert("いいね機能を使うにはログインしてください。");
+                        return [2 /*return*/, false];
+                    }
+                    if (!liked) return [3 /*break*/, 2];
+                    return [4 /*yield*/, Http_1.default.delete("/api/photos/" + id + "/like")];
+                case 1:
+                    res = _a.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, Http_1.default.put("/api/photos/" + id + "/like")];
+                case 3:
+                    res = _a.sent();
+                    _a.label = 4;
+                case 4:
+                    if (res.status !== ResposeCode_1.OK) {
+                        dispatch(error_1.setErrorCode(res.status));
+                        return [2 /*return*/, false];
+                    }
+                    fetchPhotos();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     return (react_1.default.createElement("div", { className: "photo-list" },
-        react_1.default.createElement("div", { className: "grid" }, photoList.map(function (photo) { return (react_1.default.createElement(Photo_1.default, { photo: photo, className: "grid__item", key: photo.id })); })),
+        react_1.default.createElement("div", { className: "grid" }, photoList.map(function (photo) { return (react_1.default.createElement(Photo_1.default, { photo: photo, onLike: handleOnLike, className: "grid__item", key: photo.id })); })),
         react_1.default.createElement(Pagination_1.default, { currentPage: currentPage, lastPage: lastPage })));
 };
 exports.default = PhotoList;
