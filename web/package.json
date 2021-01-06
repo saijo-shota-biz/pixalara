@@ -17,7 +17,7 @@
     "@types/react-dom": "^16.9.7",
     "@types/react-redux": "^7.1.8",
     "@types/react-router-dom": "^5.1.5",
-    "axios": "^0.19",
+    "axios": "^0.21",
     "cross-env": "^7.0",
     "laravel-mix": "^5.0.1",
     "react": "^16.2.0",
